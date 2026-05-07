@@ -1,16 +1,21 @@
-
 """
 Number Guessing Game
 
-- Generates a random number between 1 and 100
-- User keeps guessing until correct
+- Generates a random number based on difficulty level
+- Easy: 1-50 (20 attempts), Medium: 1-100 (10 attempts), Hard: 1-500 (7 attempts)
+- User keeps guessing until correct or attempts exhausted
 - Provides hints (higher/lower)
-- Tracks number of attempts
+- Tracks number of attempts and remaining attempts
+- Option to replay after each game
 """
 import random # Built-in module used to generate random numbers
 
-
+limit_replay=0
 while True:
+    
+    if limit_replay>=3:
+        print("Number of replays Exhausted")
+        break
     print("choose difficulty 1.Easy 2.Medium 3.Tough")
     difficulty=int(input("Choose difficulty level"))
     if difficulty==1:
@@ -57,6 +62,7 @@ while True:
 
     replay = input("Do you want to play again? ")
     if replay.lower() == "yes":
+        limit_replay+=1
         continue
     else:
         print("Thanks for playing, bye!")
