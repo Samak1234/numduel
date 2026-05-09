@@ -10,7 +10,9 @@ Number Guessing Game
 """
 import random # Built-in module used to generate random numbers
 
+best_attempt = float('inf')
 limit_replay = 0
+
 while True:
 
     if limit_replay >= 3:
@@ -22,15 +24,15 @@ while True:
         difficulty = int(input("Choose difficulty level: "))
         # Generate a random number based on difficulty (this stays constant for one game)
         if difficulty == 1:
-            upper_limit=50
+            upper_limit = 50
             secret = random.randint(1, upper_limit)
             max_attempts = 20
         elif difficulty == 2:
-            upper_limit=100
+            upper_limit = 100
             secret = random.randint(1, upper_limit)
             max_attempts = 10
         else:
-            upper_limit=500
+            upper_limit = 500
             secret = random.randint(1, upper_limit)
             max_attempts = 7
     except:
@@ -61,6 +63,11 @@ while True:
         if guess == secret:
             print("Ps you got it,Congratulations it's Correct Man") # User guessed correctly
             print(f"You got it in {no_of_attempts} attempts")
+
+            if no_of_attempts < best_attempt:
+                best_attempt = no_of_attempts
+
+            print(f"So far your best score is: {best_attempt}")
             break # exits the loop
 
         elif guess < secret:
@@ -74,4 +81,6 @@ while True:
         continue
     else:
         print("Thanks for playing, bye!")
+        if best_attempt != float('inf'):
+            print(f"Your best score this session: {best_attempt} attempts")
         break
