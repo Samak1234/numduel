@@ -14,7 +14,7 @@ best_attempt = float('inf')
 limit_replay = 0
 
 while True:
-
+    hint_shown= False
     if limit_replay >= 3:
         print("Number of replays Exhausted")
         break
@@ -61,7 +61,14 @@ while True:
 
         # Increment attempt count after each guess
         no_of_attempts += 1
-
+        
+        if no_of_attempts >max_attempts /2 and hint_shown == False:
+             if secret%2==0:
+                 print("Hint:Number is even") 
+                 
+             else:
+                 print("Hint:number is Odd")
+             hint_shown = True
         # Check if the guess matches the secret number
         if guess == secret:
             print("Ps you got it,Congratulations it's Correct Man") # User guessed correctly
