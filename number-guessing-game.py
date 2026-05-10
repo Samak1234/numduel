@@ -8,94 +8,132 @@ Number Guessing Game
 - Tracks number of attempts and remaining attempts
 - Option to replay after each game
 """
-import random # Built-in module used to generate random numbers
+
+import random  # Built-in module used to generate random numbers
 
 best_attempt = float('inf')
 limit_replay = 0
-score=0
+score = 0
+
 while True:
-    hint_shown= False
+
+    hint_shown = False
+
     if limit_replay >= 3:
         print("Number of replays Exhausted")
         break
 
-    print("choose difficulty"
-          "1.Easy" 
-          "2.Medium"
-          "3.Tough")
-    try:
-        difficulty = input("Choose difficulty level: ").lower()
-        # Generate a random number based on difficulty (this stays constant for one game)
-        if difficulty == "easy":
-            upper_limit = 50
-            secret = random.randint(1, upper_limit)
-            max_attempts = 20
-        elif difficulty == "medium":
-            upper_limit = 100
-            secret = random.randint(1, upper_limit)
-            max_attempts = 10
-        else:
-            upper_limit = 500
-            secret = random.randint(1, upper_limit)
-            max_attempts = 7
-    except:
-        print("Please enter a valid number!")
+    print("\nChoose difficulty:")
+    print("easy")
+    print("medium")
+    print("hard")
+
+    # Generate a random number based on difficulty (this stays constant for one game)
+    difficulty = input("Choose difficulty level: ").lower()
+
+    if difficulty == "easy":
+        upper_limit = 50
+        max_attempts = 20
+
+    elif difficulty == "medium":
+        upper_limit = 100
+        max_attempts = 10
+
+    elif difficulty == "hard":
+        upper_limit = 500
+        max_attempts = 7
+
+    else:
+        print("Please choose easy, medium, or hard!")
         continue
+
+    # Secret number generated after difficulty selection
+    secret = random.randint(1, upper_limit)
 
     # Counter to track how many attempts the user makes
     no_of_attempts = 0
 
     while True:
 
-        print(f"remaining no of attempts are as follow,{max_attempts - no_of_attempts}")
+        print(f"\nRemaining no of attempts are as follow: {max_attempts - no_of_attempts}")
 
         if no_of_attempts >= max_attempts:
             print("Attempts Exhausted better luck next time")
-            break #stop the game
+            print(f"The secret number was: {secret}")
+            break  # stop the game
+
         try:
-            # Ask the user to guess the number and convert input to integer
-            guess = int(input(f"Guess a number between 1 and {upper_limit} :"))
-            if guess < 1 or guess > upper_limit :
+
+            # Ask the user to guess the number
+            guess_input = input(
+                f"Guess a number between 1 and {upper_limit} "
+                f"(or type quit): "
+            ).lower()
+
+            # Exit option for user
+            if guess_input in ["quit", "exit", "q"]:
+                print("You exited the game")
+                break
+
+            # Convert input to integer after validation
+            guess = int(guess_input)
+
+            # Check if guess is within valid range
+            if guess < 1 or guess > upper_limit:
                 print("The number you entered is Out of Range")
                 continue
-        except:
+
+        except ValueError:
             print("Please enter a whole number!")
-            continue #skip to next iteration
+            continue  # skip to next iteration
 
         # Increment attempt count after each guess
         no_of_attempts += 1
-        
-        if no_of_attempts >max_attempts /2 and hint_shown == False:
-             if secret%2==0:
-                 print("Hint:Number is even") 
-                 
-             else:
-                 print("Hint:number is Odd")
-             if secret%5==0:
-                print("Hint:number is divisble by 5")
-             hint_shown = True
+
+        # Hint system after half attempts are used
+        if no_of_attempts > max_attempts / 2 and hint_shown == False:
+
+            if secret % 2 == 0:
+                print("Hint: Number is even")
+
+            else:
+                print("Hint: Number is Odd")
+
+            if secret % 5 == 0:
+                print("Hint: Number is divisible by 5")
+
+            hint_shown = True
+
         # Check if the guess matches the secret number
         if guess == secret:
-            print("Ps you got it,Congratulations it's Correct Man") # User guessed correctly
+
+            print("Ps you got it, Congratulations it's Correct Man")  # User guessed correctly
             print(f"You got it in {no_of_attempts} attempts")
 
+            # Store best attempt score
             if no_of_attempts < best_attempt:
                 best_attempt = no_of_attempts
 
             print(f"So far your best score is: {best_attempt}")
-            break # exits the loop
+
+            break  # exits the loop
 
         elif guess < secret:
-            print("Guess Higher number") # Hint: number is bigger
-        else:
-            print("Guess lower number") # Hint: number is smaller
+            print("Guess Higher number")  # Hint: number is bigger
 
-    replay = input("Do you want to play again? ")
-    if replay.lower() == "yes":
+        else:
+            print("Guess lower number")  # Hint: number is smaller
+
+    replay = input("\nDo you want to play again? ").lower()
+
+    if replay == "yes":
         limit_replay += 1
         continue
+
     else:
         print("Thanks for playing, bye!")
+
         if best_attempt != float('inf'):
             print(f"Your best score this session: {best_attempt} attempts")
+
         break
