@@ -6,6 +6,7 @@ Number Guessing Game
 - User keeps guessing until correct or attempts exhausted
 - Provides hints (higher/lower)
 - Tracks number of attempts and remaining attempts
+- Stores guess history using lists
 - Option to replay after each game
 """
 
@@ -53,6 +54,9 @@ while True:
     # Counter to track how many attempts the user makes
     no_of_attempts = 0
 
+    # List used to store all valid guesses
+    guesses = []
+
     while True:
 
         print(f"\nRemaining no of attempts are as follow: {max_attempts - no_of_attempts}")
@@ -60,6 +64,10 @@ while True:
         if no_of_attempts >= max_attempts:
             print("Attempts Exhausted better luck next time")
             print(f"The secret number was: {secret}")
+
+            # Show guess history after losing
+            print(f"Your guesses were: {guesses}")
+
             break  # stop the game
 
         try:
@@ -73,6 +81,10 @@ while True:
             # Exit option for user
             if guess_input in ["quit", "exit", "q"]:
                 print("You exited the game")
+
+                # Show guesses before exiting
+                print(f"Your guesses were: {guesses}")
+
                 break
 
             # Convert input to integer after validation
@@ -89,6 +101,12 @@ while True:
 
         # Increment attempt count after each guess
         no_of_attempts += 1
+
+        # Store valid guesses inside list
+        guesses.append(guess)
+
+        # Show guess history
+        print(f"Previous guesses: {guesses}")
 
         # Hint system after half attempts are used
         if no_of_attempts > max_attempts / 2 and hint_shown == False:
@@ -109,6 +127,9 @@ while True:
 
             print("Ps you got it, Congratulations it's Correct Man")  # User guessed correctly
             print(f"You got it in {no_of_attempts} attempts")
+
+            # Show guess history after winning
+            print(f"Your guesses were: {guesses}")
 
             # Store best attempt score
             if no_of_attempts < best_attempt:
