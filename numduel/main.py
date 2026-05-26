@@ -18,7 +18,6 @@ import random  # Built-in module used to generate random numbers
 best_attempt = float('inf')
 limit_replay = 0
 
-
 while True:
 
     hint_shown = False
@@ -27,6 +26,7 @@ while True:
         print("Number of replays Exhausted")
         break
 
+def choose_difficulty(difficulty):
 
     print("\nChoose difficulty:")
     print("easy")
