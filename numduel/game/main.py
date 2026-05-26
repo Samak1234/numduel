@@ -14,7 +14,7 @@ Number Guessing Game
 """
 
 from difficulty import choose_difficulty 
-
+from hints import show_hint
 import random  # Built-in module used to generate random numbers
 
 best_attempt = float('inf')
@@ -102,19 +102,12 @@ while True:
         print(f"Previous guesses: {guesses}")
 
         # Hint system after half attempts are used
-        if no_of_attempts > max_attempts / 2 and hint_shown == False:
-
-            if secret % 2 == 0:
-                print("Hint: Number is even")
-
-            else:
-                print("Hint: Number is Odd")
-
-            if secret % 5 == 0:
-                print("Hint: Number is divisible by 5")
-
-            hint_shown = True
-
+        hint_shown = show_hint(
+            secret,
+            no_of_attempts,
+            max_attempts,
+            hint_shown
+        )
         # Check if the guess matches the secret number
         if guess == secret:
 
