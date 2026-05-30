@@ -1,16 +1,38 @@
 """
-Number Guessing Game
+NumDuel - Number Guessing Game
 
-- Generates a random number based on difficulty level
-- Easy: 1-50 (20 attempts), Medium: 1-100 (10 attempts), Hard: 1-500 (7 attempts)
-- User keeps guessing until correct or attempts exhausted
-- Provides hints (higher/lower) and even/odd hint after halfway
-- Tracks number of attempts and remaining attempts
-- Stores and displays guess history using lists
-- Score system with penalty per wrong guess
-- Tracks best attempt across all games in session
-- Option to replay after each game (max 3 replays)
-- Quit option available during guessing
+Features:
+- Difficulty levels:
+  - Easy: 1-50 (20 attempts)
+  - Medium: 1-100 (10 attempts)
+  - Hard: 1-500 (7 attempts)
+- Random number generation based on selected difficulty
+- Higher/lower guessing hints
+- Additional even/odd and divisibility hints
+- Guess history tracking
+- Score system with penalties for incorrect guesses
+- Best attempt tracking during current session
+- Replay system (max 3 replays)
+- Input validation
+- Quit option during gameplay
+- Modular architecture:
+  - difficulty.py
+  - hints.py
+  - validators.py
+  - scoring.py
+  - replay.py
+  - leaderboard.py
+- JSON-based leaderboard persistence
+- Leaderboard display across game sessions
+
+Learning Focus:
+- Functions and modules
+- Separation of concerns
+- Refactoring
+- JSON persistence
+- File handling
+- Structured data
+- Software architecture fundamentals
 """
 
 from difficulty import choose_difficulty 
@@ -24,14 +46,15 @@ import random  # Built-in module used to generate random numbers
 
 best_attempt = float('inf')
 limit_replay = 0
-
+player_name = input("Enter your name: ")
 while True:
-
+    
     hint_shown = False
- 
+    
     if limit_replay >= 3:
         print("Number of replays Exhausted")
         break
+    
     print("\nChoose difficulty:")
     print("easy")
     print("medium")
