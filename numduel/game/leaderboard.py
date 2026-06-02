@@ -1,8 +1,9 @@
 import json
-def save_score(attempts):
+def save_score(attempts,player_name):
 
     score_data = {
-        "attempts":attempts
+        "attempts":attempts,
+        "player_name":player_name
         }
     with open("../data/leaderboard.json","r") as file:
 
@@ -24,4 +25,4 @@ def show_leaderboard():
 
     for index,score in enumerate(data,start=1):
 
-        print(f"{index}.{score['attempts']}attempts")
+        print(f"{index}. {score['player_name']} - {score['attempts']} attempts")
