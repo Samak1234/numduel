@@ -20,6 +20,8 @@ def show_leaderboard():
     with open("../data/leaderboard.json","r") as file:
 
         data = json.load(file)
+         
+    data.sort(key=lambda score: score["attempts"])
 
     print("\nLeaderboard: ")
 
