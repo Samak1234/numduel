@@ -8,12 +8,26 @@ def save_score(attempts,player_name):
     with open("../data/leaderboard.json","r") as file:
 
         data = json.load(file)
+        
+        found_player = False #Because initially we assume: Player does not exist
 
-    data.append(score_data)
+        for score in data:
 
-    with open("../data/leaderboard.json","w") as file:
+            if score["player_name"] == player_name:
 
-        json.dump(data,file)
+                found_player = True
+
+                if attempts <score["attempts"]:
+                    score["attempts"] = attempts
+
+                break
+        
+        if found_player ==False:
+            data.append(score_data)
+
+        with open("../data/leaderboard.json","w") as file:
+
+            json.dump(data,file)
         
 def show_leaderboard():
 
