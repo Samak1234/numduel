@@ -144,7 +144,11 @@ while True:
 
             print("Ps you got it, Congratulations it's Correct Man")  # User guessed correctly
             print(f"You got it in {no_of_attempts} attempts")
-            save_score(no_of_attempts,player_name)
+            save_score(
+            no_of_attempts,
+            player_name,
+            difficulty
+            )
             # Show guess history after winning
             print(f"Your guesses were: {guesses}")
 
