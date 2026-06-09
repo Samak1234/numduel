@@ -41,8 +41,15 @@ def show_leaderboard():
         print("No scores yet")
         return 
     
-    print("\nLeaderboard: ")
+    print("\n🏆Leaderboard: ")
+    print("-"*35)
+    print("Rank|Player    |Attemmpts")
+    print("-"*35)
 
     for index,score in enumerate(data,start=1):
 
-        print(f"{index}. {score['player_name']} - {score['attempts']} attempts")
+      print(
+     f"{index:<4} | "
+     f"{score['player_name']:<11} | "
+     f"{score['attempts']}"
+    )
