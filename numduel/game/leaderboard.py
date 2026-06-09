@@ -36,7 +36,11 @@ def show_leaderboard():
         data = json.load(file)
          
     data.sort(key=lambda score: score["attempts"])
-
+    
+    if len(data)==0:
+        print("No scores yet")
+        return 
+    
     print("\nLeaderboard: ")
 
     for index,score in enumerate(data,start=1):

@@ -46,7 +46,8 @@ import random  # Built-in module used to generate random numbers
 
 best_attempt = float('inf')
 limit_replay = 0
-player_name = input("Enter your name: ")
+print("\n")
+player_name = input("Enter your name: ").strip().lower()
 while True:
     
     hint_shown = False
@@ -105,6 +106,8 @@ while True:
 
                 # Show guesses before exiting
                 print(f"Your guesses were: {guesses}")
+                
+                show_leaderboard()
 
                 break
 
@@ -141,7 +144,7 @@ while True:
 
             print("Ps you got it, Congratulations it's Correct Man")  # User guessed correctly
             print(f"You got it in {no_of_attempts} attempts")
-            save_score(no_of_attempts)
+            save_score(no_of_attempts,player_name)
             # Show guess history after winning
             print(f"Your guesses were: {guesses}")
 
