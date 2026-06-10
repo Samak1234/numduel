@@ -1,19 +1,40 @@
+"""
+hints.py
 
-# Hint system after half attempts are used
+Responsible for generating hints based on:
+- Secret number
+- Attempts used
+- Maximum attempts
+- Whether hints have already been shown
+
+Returns hints instead of printing them.
+"""
 
 def show_hint(secret, no_of_attempts, max_attempts, hint_shown):
-        
-    if no_of_attempts > max_attempts / 2 and hint_shown == False:
+    """
+    Returns:
+        (hint_shown, hints)
 
-        if secret % 2 == 0:
-            print("Hint: Number is even")
+    hint_shown -> bool
+    hints -> list of strings
+    """
 
-        else:
-            print("Hint: Number is Odd")
+    if hint_shown:
+        return True, []
 
-        if secret % 5 == 0:
-            print("Hint: Number is divisible by 5")
+    if no_of_attempts <= max_attempts / 2:
+        return False, []
 
-        return True
-    
-    return False
+    hints = []
+
+    # Even / Odd hint
+    if secret % 2 == 0:
+        hints.append("Hint: Number is even")
+    else:
+        hints.append("Hint: Number is odd")
+
+    # Divisibility hint
+    if secret % 5 == 0:
+        hints.append("Hint: Number is divisible by 5")
+
+    return True, hints

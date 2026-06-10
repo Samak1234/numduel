@@ -132,13 +132,14 @@ while True:
         # Show guess history
         print(f"Previous guesses: {guesses}")
 
-        # Hint system after half attempts are used
-        hint_shown = show_hint(
+        hint_shown,hints = show_hint(
             secret,
             no_of_attempts,
             max_attempts,
             hint_shown
         )
+        for hint in hints:
+            print(hint)
         # Check if the guess matches the secret number
         if guess == secret:
 
