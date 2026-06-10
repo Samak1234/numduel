@@ -1,11 +1,32 @@
 import json
+import os
+
+# Build the path relative to this file's location
+# so it works no matter where you run the script from
+LEADERBOARD_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "..", "data", "leaderboard.json"
+)
 
 
-def save_score(
-    attempts,
-    player_name,
-    difficulty
-):
+def _load_data():
+    """Load leaderboard from file. Returns empty list if file missing or broken."""
+    try:
+        with open(LEADERBOARD_PATH, "r") as file:
+            return json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
+
+def _save_data(data):
+    """Write leaderboard to file. Creates the data/ folder if it doesn't exist."""
+    os.makedirs(os.path.dirname(LEADERBOARD_PATH), exist_ok=True)
+    with open(LEADERBOARD_PATH, "w") as file:
+        json.dump(data, file, indent=2)
+
+
+def save_score(attempts, player_name, difficulty):
+    data = _load_data()
 
     score_data = {
         "attempts": attempts,
@@ -13,55 +34,39 @@ def save_score(
         "difficulty": difficulty
     }
 
-    with open("../data/leaderboard.json", "r") as file:
-
-        data = json.load(file)
-
-    found_player = False
-
+    # Match on BOTH name AND difficulty
+    # so easy and hard scores are tracked separately
     for score in data:
-
-        if score["player_name"] == player_name:
-
-            found_player = True
-
+        if score["player_name"] == player_name and score["difficulty"] == difficulty:
             if attempts < score["attempts"]:
-
                 score["attempts"] = attempts
-                score["difficulty"] = difficulty
+            _save_data(data)  # save whether or not we updated
+            return            # stop here, no need to append
 
-            break
-
-    if found_player == False:
-        data.append(score_data)
-
-    with open("../data/leaderboard.json", "w") as file:
-
-        json.dump(data, file)
+    # Player not found for this difficulty — add new record
+    data.append(score_data)
+    _save_data(data)
 
 
 def show_leaderboard():
+    data = _load_data()
 
-    with open("../data/leaderboard.json", "r") as file:
-
-        data = json.load(file)
-
-    data.sort(key=lambda score: score["attempts"])
-
-    if len(data) == 0:
+    if not data:
         print("No scores yet")
         return
 
+    data.sort(key=lambda s: s["attempts"])
+
     print("\n🏆 Leaderboard")
     print("-" * 50)
-    print("Rank | Player      | Attempts | Difficulty")
+    print(f"{'Rank':<5}| {'Player':<12}| {'Attempts':<9}| Difficulty")
     print("-" * 50)
 
     for index, score in enumerate(data, start=1):
-
         print(
-            f"{index:<4} | "
-            f"{score['player_name']:<11} | "
-            f"{score['attempts']:<8} | "
+            f"{index:<5}| "
+            f"{score['player_name']:<12}| "
+            f"{score['attempts']:<9}| "
             f"{score['difficulty']}"
         )
+    print("-" * 50)
