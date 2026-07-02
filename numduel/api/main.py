@@ -1,11 +1,13 @@
 import sys
 import os
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "game"))
 
-import random
-import uuid
 from fastapi import FastAPI, HTTPException
+
 from api.models import StartGameRequest, GuessRequest
+from api.service import create_game, games
+
 from difficulty import choose_difficulty
 from hints import show_hint
 from scoring import reducing_score
@@ -14,33 +16,29 @@ from leaderboard import save_score
 
 app = FastAPI()
 
-games = {}
 
 @app.get("/")
 def root():
     return {"message": "NumDuel API is running"}
+
 
 @app.post("/game/start")
 def start_game(request: StartGameRequest):
     upper_limit, max_attempts, score = choose_difficulty(request.difficulty)
 
     if upper_limit is None:
-        raise HTTPException(status_code=400, detail="Invalid difficulty. Choose easy, medium, or hard.")
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid difficulty. Choose easy, medium, or hard."
+        )
 
-    game_id = str(uuid.uuid4())
-
-    games[game_id] = {
-        "player_name": request.player_name,
-        "difficulty": request.difficulty,
-        "secret": random.randint(1, upper_limit),
-        "upper_limit": upper_limit,
-        "max_attempts": max_attempts,
-        "score": score,
-        "no_of_attempts": 0,
-        "guesses": [],
-        "hint_shown": False,
-        "status": "active"
-    }
+    game_id = create_game(
+        request.player_name,
+        request.difficulty,
+        upper_limit,
+        max_attempts,
+        score
+    )
 
     return {
         "game_id": game_id,
@@ -59,10 +57,16 @@ def make_guess(request: GuessRequest):
         raise HTTPException(status_code=404, detail="Game not found.")
 
     if game["status"] != "active":
-        raise HTTPException(status_code=400, detail=f"Game is already {game['status']}.")
+        raise HTTPException(
+            status_code=400,
+            detail=f"Game is already {game['status']}."
+        )
 
     if not is_valid_guess(request.guess, game["upper_limit"]):
-        raise HTTPException(status_code=400, detail=f"Guess must be between 1 and {game['upper_limit']}.")
+        raise HTTPException(
+            status_code=400,
+            detail=f"Guess must be between 1 and {game['upper_limit']}."
+        )
 
     game["no_of_attempts"] += 1
     game["guesses"].append(request.guess)
@@ -73,11 +77,18 @@ def make_guess(request: GuessRequest):
         game["max_attempts"],
         game["hint_shown"]
     )
+
     game["hint_shown"] = hint_shown
 
     if request.guess == game["secret"]:
         game["status"] = "won"
-        save_score(game["no_of_attempts"], game["player_name"], game["difficulty"])
+
+        save_score(
+            game["no_of_attempts"],
+            game["player_name"],
+            game["difficulty"]
+        )
+
         return {
             "result": "correct",
             "attempts": game["no_of_attempts"],
@@ -88,6 +99,7 @@ def make_guess(request: GuessRequest):
 
     if game["no_of_attempts"] >= game["max_attempts"]:
         game["status"] = "lost"
+
         return {
             "result": "lost",
             "secret": game["secret"],
@@ -110,6 +122,7 @@ def make_guess(request: GuessRequest):
 @app.get("/leaderboard")
 def get_leaderboard():
     from leaderboard import _load_data
+
     data = _load_data()
 
     if not data:
