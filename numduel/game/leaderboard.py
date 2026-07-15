@@ -1,5 +1,13 @@
 import json
 import os
+import sys
+
+sys.path.insert(
+    0,
+    os.path.join(os.path.dirname(__file__), "..")
+)
+
+from database import get_cursor
 
 # Build the path relative to this file's location
 # so it works no matter where you run the script from
@@ -10,42 +18,70 @@ LEADERBOARD_PATH = os.path.join(
 
 
 def _load_data():
-    """Load leaderboard from file. Returns empty list if file missing or broken."""
-    try:
-        with open(LEADERBOARD_PATH, "r") as file:
-            return json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
+    """Load leaderboard from PostgreSQL."""
 
+    connection,cursor=get_cursor()
 
-def _save_data(data):
-    """Write leaderboard to file. Creates the data/ folder if it doesn't exist."""
-    os.makedirs(os.path.dirname(LEADERBOARD_PATH), exist_ok=True)
-    with open(LEADERBOARD_PATH, "w") as file:
-        json.dump(data, file, indent=2)
+    cursor.execute("""
+        SELECT attempts, player_name, difficulty
+        FROM leaderboard
+    """)
+
+    rows = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+
+    return [
+        {
+            "attempts": row[0],
+            "player_name": row[1],
+            "difficulty": row[2]
+        }
+        for row in rows
+    ]
 
 
 def save_score(attempts, player_name, difficulty):
-    data = _load_data()
+    connection, cursor = get_cursor()
 
-    score_data = {
-        "attempts": attempts,
-        "player_name": player_name,
-        "difficulty": difficulty
-    }
+    cursor.execute("""
+        SELECT attempts
+        FROM leaderboard
+        WHERE player_name = %s
+        AND difficulty = %s
+    """, (player_name, difficulty))
+
+    existing_score = cursor.fetchone()
 
     # Match on BOTH name AND difficulty
     # so easy and hard scores are tracked separately
-    for score in data:
-        if score["player_name"] == player_name and score["difficulty"] == difficulty:
-            if attempts < score["attempts"]:
-                score["attempts"] = attempts
-            _save_data(data)  # save whether or not we updated
-            return            # stop here, no need to append
+    if existing_score:
 
-    # Player not found for this difficulty — add new record
-    data.append(score_data)
-    _save_data(data)
+        # Update only if the new score is better
+        if attempts < existing_score[0]:
+            cursor.execute("""
+                UPDATE leaderboard
+                SET attempts = %s
+                WHERE player_name = %s
+                AND difficulty = %s
+            """, (attempts, player_name, difficulty))
+
+    else:
+        # Player not found for this difficulty — add new record
+        cursor.execute("""
+            INSERT INTO leaderboard (
+                player_name,
+                attempts,
+                difficulty
+            )
+            VALUES (%s, %s, %s)
+        """, (player_name, attempts, difficulty))
+
+    connection.commit()
+
+    cursor.close()
+    connection.close()
 
 
 def show_leaderboard():
@@ -69,4 +105,5 @@ def show_leaderboard():
             f"{score['attempts']:<9}| "
             f"{score['difficulty']}"
         )
+
     print("-" * 50)

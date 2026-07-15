@@ -9,3 +9,9 @@ def get_connection():
         password="1234",
         port="5432"
     )
+
+def get_cursor():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    return connection, cursor
