@@ -1,67 +1,60 @@
-# NumDuel 🎯
+# 🎯 NumDuel
 
-NumDuel is a backend engineering learning project that began as a Python CLI number guessing game and gradually evolved into a REST API using FastAPI.
+A production-ready backend-powered number guessing game built with **Python**, **FastAPI**, and **PostgreSQL**, featuring a cloud-hosted database on **Neon** and deployed on **Render**.
 
-The project focuses on learning backend fundamentals such as modular architecture, persistence, API development, separation of concerns, and software design.
-
----
-
-## Features
-
-### Gameplay
-
-- Multiple difficulty levels
-  - Easy (1–50)
-  - Medium (1–100)
-  - Hard (1–500)
-- Random number generation
-- Higher / Lower hints
-- Even / Odd hints
-- Divisibility hints
-- Guess history tracking
-- Scoring system
-- Replay support
-- Quit option during gameplay
-
-### Leaderboard
-
-- Persistent leaderboard using JSON
-- Best score tracking per player
-- Difficulty-specific score tracking
-- Sorted leaderboard by attempts
-- Empty leaderboard handling
-
-### FastAPI Backend
-
-- REST API using FastAPI
-- Interactive Swagger UI documentation
-- Start a new game endpoint
-- Submit guesses through API
-- Retrieve leaderboard through API
-- Request validation using Pydantic
-- In-memory game state management
-- Service layer for game creation
+NumDuel began as a modular Python CLI application and evolved into a RESTful backend API with persistent storage, cloud deployment, and interactive API documentation.
 
 ---
 
-## API Endpoints
+## 🚀 Live Demo
 
-| Method | Endpoint | Description |
-|---------|----------|-------------|
-| GET | `/` | Health check |
-| POST | `/game/start` | Start a new game |
-| POST | `/game/guess` | Submit a guess |
-| GET | `/leaderboard` | View leaderboard |
+**API:** https://numduel.onrender.com
 
-Swagger UI:
-
-```text
-http://127.0.0.1:8000/docs
-```
+**Interactive API Docs (Swagger):**
+https://numduel.onrender.com/docs
 
 ---
 
-## Project Structure
+## ✨ Features
+
+- 🎮 Number guessing game with multiple difficulty levels
+- 🏆 Persistent leaderboard stored in PostgreSQL
+- ⚡ REST API built with FastAPI
+- ☁️ Cloud-hosted PostgreSQL database using Neon
+- 🌐 Public deployment on Render
+- 🧪 Unit tested game logic
+- 📁 Modular project architecture
+- 🔐 Environment variable configuration with python-dotenv
+- 📖 Automatic OpenAPI / Swagger documentation
+
+---
+
+# 🏗️ Tech Stack
+
+## Backend
+
+- Python 3.12
+- FastAPI
+- PostgreSQL
+- psycopg2
+- python-dotenv
+
+## Database
+
+- PostgreSQL
+- Neon
+
+## Deployment
+
+- Render
+
+## Testing
+
+- pytest
+
+---
+
+# 📂 Project Structure
 
 ```text
 numduel/
@@ -74,142 +67,183 @@ numduel/
 ├── game/
 │   ├── difficulty.py
 │   ├── hints.py
-│   ├── validators.py
-│   ├── scoring.py
+│   ├── leaderboard.py
 │   ├── replay.py
-│   └── leaderboard.py
-│
-├── data/
-│   └── leaderboard.json
+│   ├── scoring.py
+│   └── validators.py
 │
 ├── tests/
 │
+├── database.py
+├── requirements.txt
 ├── README.md
-└── learning.md
+└── .env
 ```
 
 ---
 
-## Architecture
+# ⚙️ Installation
 
-The project is divided into two layers.
+Clone the repository:
 
-### API Layer
+```bash
+git clone https://github.com/YOUR_USERNAME/numduel.git
+cd numduel
+```
 
-Responsible for handling HTTP requests and responses.
+Create a virtual environment:
 
+```bash
+python -m venv .venv
+```
+
+Activate it.
+
+Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+macOS/Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+# 🔑 Environment Variables
+
+Create a `.env` file in the project root.
+
+```env
+DB_HOST=your_host
+DB_NAME=your_database
+DB_USER=your_username
+DB_PASSWORD=your_password
+DB_PORT=5432
+```
+
+---
+
+# ▶️ Running the API
+
+Start the development server:
+
+```bash
+uvicorn api.main:app --reload
+```
+
+The API will be available at:
+
+```
+http://127.0.0.1:8000
+```
+
+Swagger UI:
+
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+# 🧪 Running Tests
+
+Execute the test suite:
+
+```bash
+pytest
+```
+
+---
+
+# 🗄️ Database
+
+NumDuel uses PostgreSQL for persistent leaderboard storage.
+
+The database is hosted on **Neon** and accessed securely using environment variables.
+
+---
+
+# ☁️ Deployment
+
+Backend deployment:
+
+- **Hosting:** Render
+- **Database:** Neon PostgreSQL
+
+Live API:
+
+```
+https://numduel.onrender.com
+```
+
+Interactive documentation:
+
+```
+https://numduel.onrender.com/docs
+```
+
+---
+
+# 📈 Project Evolution
+
+This project evolved through multiple stages:
+
+- CLI number guessing game
+- Modular project architecture
+- Automated tests with pytest
+- JSON leaderboard
+- PostgreSQL migration
+- FastAPI REST API
+- Cloud database with Neon
+- Environment variable configuration
+- Cloud deployment on Render
+
+---
+
+# 📚 Skills Demonstrated
+
+- Python application development
+- REST API design
 - FastAPI
-- Endpoints
-- Request validation
-- JSON responses
-
-### Game Layer
-
-Responsible for the game's business logic.
-
-- Difficulty selection
-- Hint generation
-- Validation
-- Scoring
-- Leaderboard
-- Replay logic
-
-The API reuses the existing game modules instead of duplicating logic.
-
----
-
-## Leaderboard Design
-
-Each leaderboard entry is stored as JSON.
-
-```json
-{
-  "player_name": "Samak",
-  "attempts": 4,
-  "difficulty": "hard"
-}
-```
-
-The leaderboard stores only the player's best score for each difficulty.
-
----
-
-## Persistence
-
-Leaderboard data is stored in:
-
-```text
-data/leaderboard.json
-```
-
-Game sessions are currently stored in memory while the API is running.
-
-```text
-games = {}
-```
-
-If the server stops, active games are lost. Persistent game storage will be added using PostgreSQL.
-
----
-
-## Concepts Practiced
-
-- Functions
-- Modules
-- Refactoring
-- Separation of Concerns
-- JSON
-- File Handling
-- Persistence
+- PostgreSQL integration
+- SQL
+- Environment configuration
+- Cloud database integration
+- API deployment
 - Testing with pytest
-- FastAPI
-- HTTP Requests & Responses
-- REST APIs
-- Pydantic
-- Swagger UI
-- In-memory State
-- Service Layer
-- Software Architecture
+- Modular software architecture
+- Git & GitHub workflow
 
 ---
 
-## What I Learned
+# 🚀 Future Improvements
 
-Through NumDuel I learned that backend development is much more than writing functions.
-
-Some recurring questions during development were:
-
-- Where should this logic live?
-- Which module owns this responsibility?
-- How should data flow through the application?
-- What belongs in the API layer versus the game layer?
-- What data should persist after the application stops?
-- How should requests and responses be structured?
-
-Key transitions during development:
-
-```text
-CLI
-        ↓
-Modular Architecture
-        ↓
-Testing with pytest
-        ↓
-FastAPI Backend
-        ↓
-REST APIs
-        ↓
-Service Layer
-```
+- JWT authentication
+- User accounts
+- Docker support
+- GitHub Actions CI/CD
+- Redis caching
+- Rate limiting
+- API versioning
+- Frontend web application
 
 ---
 
-## Future Roadmap
+# 👨‍💻 Author
 
-- PostgreSQL Integration
-- SQLAlchemy ORM
-- Persistent Game Sessions
-- User Authentication
-- Docker
-- Deployment
-- Frontend Interface
+**Samak**
+
+Backend Developer
+
+GitHub:
+https://github.com/YOUR_USERNAME
