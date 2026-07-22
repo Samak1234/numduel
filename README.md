@@ -241,9 +241,9 @@ This project evolved through multiple stages:
 
 # 👨‍💻 Author
 
-**Samak**
+**Samaksh**
 
 Backend Developer
 
 GitHub:
-https://github.com/YOUR_USERNAME
+https://github.com/Samak1234
