@@ -1,4 +1,4 @@
-# 🎯 NumDuel
+#  NumDuel
 
 A production-ready backend-powered number guessing game built with **Python**, **FastAPI**, and **PostgreSQL**, featuring a cloud-hosted database on **Neon** and deployed on **Render**.
 
@@ -6,7 +6,7 @@ NumDuel began as a modular Python CLI application and evolved into a RESTful bac
 
 ---
 
-## 🚀 Live Demo
+## Live Demo
 
 **API:** https://numduel.onrender.com
 
@@ -15,21 +15,21 @@ https://numduel.onrender.com/docs
 
 ---
 
-## ✨ Features
+## Features
 
 - 🎮 Number guessing game with multiple difficulty levels
-- 🏆 Persistent leaderboard stored in PostgreSQL
-- ⚡ REST API built with FastAPI
-- ☁️ Cloud-hosted PostgreSQL database using Neon
-- 🌐 Public deployment on Render
-- 🧪 Unit tested game logic
-- 📁 Modular project architecture
-- 🔐 Environment variable configuration with python-dotenv
-- 📖 Automatic OpenAPI / Swagger documentation
+- Persistent leaderboard stored in PostgreSQL
+- REST API built with FastAPI
+- Cloud-hosted PostgreSQL database using Neon
+- Public deployment on Render
+- Unit tested game logic
+- Modular project architecture
+- Environment variable configuration with python-dotenv
+- Automatic OpenAPI / Swagger documentation
 
 ---
 
-# 🏗️ Tech Stack
+# Tech Stack
 
 ## Backend
 
@@ -54,7 +54,7 @@ https://numduel.onrender.com/docs
 
 ---
 
-# 📂 Project Structure
+# Project Structure
 
 ```text
 numduel/
@@ -82,7 +82,7 @@ numduel/
 
 ---
 
-# ⚙️ Installation
+# Installation
 
 Clone the repository:
 
@@ -119,7 +119,7 @@ pip install -r requirements.txt
 
 ---
 
-# 🔑 Environment Variables
+# Environment Variables
 
 Create a `.env` file in the project root.
 
@@ -133,7 +133,7 @@ DB_PORT=5432
 
 ---
 
-# ▶️ Running the API
+# Running the API
 
 Start the development server:
 
@@ -155,7 +155,7 @@ http://127.0.0.1:8000/docs
 
 ---
 
-# 🧪 Running Tests
+# Running Tests
 
 Execute the test suite:
 
@@ -165,7 +165,7 @@ pytest
 
 ---
 
-# 🗄️ Database
+# Database
 
 NumDuel uses PostgreSQL for persistent leaderboard storage.
 
@@ -173,7 +173,7 @@ The database is hosted on **Neon** and accessed securely using environment varia
 
 ---
 
-# ☁️ Deployment
+# Deployment
 
 Backend deployment:
 
@@ -194,7 +194,7 @@ https://numduel.onrender.com/docs
 
 ---
 
-# 📈 Project Evolution
+# Project Evolution
 
 This project evolved through multiple stages:
 
@@ -210,7 +210,7 @@ This project evolved through multiple stages:
 
 ---
 
-# 📚 Skills Demonstrated
+# Skills Demonstrated
 
 - Python application development
 - REST API design
@@ -226,7 +226,7 @@ This project evolved through multiple stages:
 
 ---
 
-# 🚀 Future Improvements
+# Future Improvements
 
 - JWT authentication
 - User accounts
