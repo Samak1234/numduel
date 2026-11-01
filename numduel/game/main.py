@@ -35,6 +35,7 @@ Learning Focus:
 - Software architecture fundamentals
 """
 
+from numduel_intro import intro_lockdown
 from difficulty import choose_difficulty 
 from hints import show_hint
 from validators import is_valid_guess
@@ -43,6 +44,8 @@ from replay import wants_replay
 from leaderboard import save_score
 from leaderboard import show_leaderboard
 import random  # Built-in module used to generate random numbers
+
+intro_lockdown()
 
 best_attempt = float('inf')
 limit_replay = 0
