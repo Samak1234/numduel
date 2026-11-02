@@ -44,7 +44,7 @@ from scoring import reducing_score
 from replay import wants_replay
 from leaderboard import save_score
 from leaderboard import show_leaderboard
-import random  # Built-in module used to generate random numbers
+
 
 intro_lockdown()
 
