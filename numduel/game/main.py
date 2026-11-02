@@ -36,6 +36,7 @@ Learning Focus:
 """
 
 from numduel_intro import intro_lockdown
+from engine import generate_secret_number
 from difficulty import choose_difficulty 
 from hints import show_hint
 from validators import is_valid_guess
@@ -73,8 +74,8 @@ while True:
         continue
 
 
-    # Secret number generated after difficulty selection
-    secret = random.randint(1, upper_limit)
+    secret = generate_secret_number(upper_limit)
+    
 
     # Counter to track how many attempts the user makes
     no_of_attempts = 0
